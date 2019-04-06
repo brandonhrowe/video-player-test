@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Video Player Test</title>
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+      integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="custom-player.js" defer></script>
+  </head>
+  <body>
+    <div class="header">
+      <h1>The Detour Streaming Fan Page</h1>
+    </div>
+    <figure class="player">
+      <video controls loop width="100%" height="auto" preload="metadata">
+        <source
+          src="https://archive.org/download/Detour_movie/Detour_512kb.mp4"
+          type="video/mp4"
+        />
+      </video>
+      <div class="controls">
+        <button class="play" aria-label="play pause toggle">
+          <i class="fas fa-play"></i>
+        </button>
+        <button class="stop" aria-label="stop">
+          <i class="fas fa-stop"></i>
+        </button>
+        <div class="timer">
+          <div></div>
+          <span aria-label="timer">00:00:00</span>
+        </div>
+        <button class="rwd" aria-label="rewind">
+          <i class="fas fa-backward"></i>
+        </button>
+        <button class="fwd" aria-label="fast forward">
+          <i class="fas fa-forward"></i>
+        </button>
+        <button class="audio" aria-label="audio">
+          <i class="fas fa-volume-up"></i>
+        </button>
+        <button class="full-screen" aria-label="full screen">
+          <i class="fas fa-expand"></i>
+        </button>
+        <button class="speed" aria-label="speed">
+          <span class="speed">x2</span>
+        </button>
+      </div>
+    </figure>
+  </body>
+</html>
