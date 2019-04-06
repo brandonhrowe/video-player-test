@@ -31,8 +31,8 @@ function displayControls(e) {
 //Play/Pause functionality
 play.addEventListener("click", playPauseMedia);
 
-document.addEventListener("keydown", event => {
-  event.preventDefault();
+document.addEventListener("keydown", e => {
+  e.preventDefault();
   const keyName = e.code;
   if (keyName === "Space") {
     playPauseMedia();
@@ -169,10 +169,10 @@ let timerWrapperRect = timerWrapper.getBoundingClientRect();
 
 timerWrapper.addEventListener("click", changePosition);
 
-function changePosition(event) {
+function changePosition(e) {
   let begCoor = timerWrapperRect.x;
   let timerWidth = timerWrapperRect.width;
-  let clickCoor = event.x;
+  let clickCoor = e.x;
   media.currentTime = media.duration * ((clickCoor - begCoor) / timerWidth);
 }
 
@@ -215,8 +215,8 @@ function toggleFullscreen() {
 }
 
 //Skip ahead/back 10 seconds with arrow click
-document.addEventListener("keydown", event => {
-  const keyName = event.key;
+document.addEventListener("keydown", e => {
+  const keyName = e.key;
   if (media.play) {
     if (keyName === "ArrowLeft") {
       if (media.currentTime <= 10) {
@@ -246,6 +246,8 @@ function changeSpeed() {
     speed.innerHTML = "x2";
   }
 }
+
+
 
 // timerWrapper.addEventListener("hover", showThumbnail...);
 //Need to utilize some library to take image at specific time and display it in popup window
