@@ -12,6 +12,8 @@ const timer = document.querySelector(".timer span");
 const timerBar = document.querySelector(".timer div");
 
 const audio = document.querySelector(".audio");
+const volumeUp = document.querySelector("#volume-up");
+const volumeDown = document.querySelector("#volume-down");
 const fullScreen = document.querySelector(".full-screen");
 const speed = document.querySelector(".speed");
 
@@ -25,7 +27,7 @@ function displayControls(e) {
   controls.classList.add("controls-display");
   setTimeout(function() {
     controls.classList.remove("controls-display");
-  }, 3000);
+  }, 4000);
 }
 
 //Play/Pause functionality
@@ -44,6 +46,11 @@ function playPauseMedia() {
   fwd.classList.remove("active");
   clearInterval(intervalRwd);
   clearInterval(intervalFwd);
+  if (media.src === undefined) {
+    media.src = "https://archive.org/download/Detour_movie/Detour_512kb.mp4";
+    media.load();
+    media.play();
+  }
   if (media.paused) {
     play.firstElementChild.classList.remove("fa-play");
     play.firstElementChild.classList.add("fa-pause");
@@ -64,8 +71,10 @@ function stopMedia() {
   fwd.classList.remove("active");
   clearInterval(intervalRwd);
   clearInterval(intervalFwd);
-  media.pause();
-  media.currentTime = 0;
+  // media.pause();
+  // media.currentTime = 0;
+  media.removeAttribute("src");
+  media.load();
   play.firstElementChild.classList.remove("fa-pause");
   play.firstElementChild.classList.add("fa-play");
 }
@@ -178,16 +187,41 @@ function changePosition(e) {
 
 //Audio functionality
 audio.addEventListener("click", toggleMute);
+volumeUp.addEventListener("click", volumeChange);
+volumeDown.addEventListener("click", volumeChange);
 
 function toggleMute() {
   if (media.muted) {
     media.muted = false;
     audio.firstElementChild.classList.remove("fa-volume-mute");
-    audio.firstElementChild.classList.add("fa-volume-up");
+    if (media.volume >= 0.5) {
+      audio.firstElementChild.classList.add("fa-volume-up");
+    } else {
+      audio.firstElementChild.classList.add("fa-volume-down");
+    }
   } else {
     media.muted = true;
-    audio.firstElementChild.classList.remove("fa-volume-up");
+    audio.firstElementChild.classList.remove("fa-volume-up" || "fa-volume-down");
     audio.firstElementChild.classList.add("fa-volume-mute");
+  }
+}
+
+function volumeChange(e) {
+  if (media.muted) {
+    media.muted = false;
+    audio.firstElementChild.classList.remove("fa-volume-mute");
+  }
+  if (e.target.id === "volume-up") {
+    media.volume += 0.1;
+  } else {
+    media.volume -= 0.1;
+  }
+  if (media.volume >= 0.5) {
+    audio.firstElementChild.classList.remove("fa-volume-down");
+    audio.firstElementChild.classList.add("fa-volume-up");
+  } else {
+    audio.firstElementChild.classList.remove("fa-volume-up");
+    audio.firstElementChild.classList.add("fa-volume-down");
   }
 }
 
@@ -240,16 +274,18 @@ speed.addEventListener("click", changeSpeed);
 function changeSpeed() {
   if (media.playbackRate === 1) {
     media.playbackRate = 2;
-    speed.innerHTML = "x1";
+    speed.innerHTML = "Speed<br>x1";
   } else {
     media.playbackRate = 1;
-    speed.innerHTML = "x2";
+    speed.innerHTML = "Speed<br>x2";
   }
 }
-
-
 
 // timerWrapper.addEventListener("hover", showThumbnail...);
 //Need to utilize some library to take image at specific time and display it in popup window
 
 //Want to update audio and playbackRate to be sliders/selectors
+
+//Look more into implementing other info from Internet Archive API, such as title, etc.
+
+//Implement subtitle track

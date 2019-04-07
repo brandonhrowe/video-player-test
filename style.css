@@ -61,7 +61,7 @@ video {
 }
 
 button {
-  flex-basis: 10%;
+  flex-basis: 7%;
   padding: 0px;
   display: flex;
   justify-content: center;
@@ -73,10 +73,23 @@ button > i {
   color: #3f3f3f;
 }
 
+.volume-div {
+  flex-basis: 3%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.volume-div button {
+  flex-grow: 1;
+  background-color: #eaeaea;
+  border: 50px;
+}
+
 .speed {
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
-  font-size: 20px;
+  font-size: 10px;
   position: relative;
 }
 
