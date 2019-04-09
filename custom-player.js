@@ -19,6 +19,7 @@ const speed = document.querySelector(".speed");
 
 const dupeMedia = document.querySelector("#dupe-video");
 
+console.log(media.textTracks);
 //Gets rid of the default control buttons from the video window, but still allows us to utilize functions.
 media.removeAttribute("controls");
 
@@ -277,6 +278,14 @@ document.addEventListener("fullscreenchange", e => {
     media.classList.add("fullscreen");
     fullScreen.firstElementChild.classList.remove("fa-expand");
     fullScreen.firstElementChild.classList.add("fa-compress");
+    document.addEventListener("mousemove", () => {
+      setTimeout(() => {
+        if (!media.classList.contains("cursor")) {
+          media.classList.add("cursor");
+        }
+      }, 4000);
+      media.classList.remove("cursor");
+    });
   }
 });
 
@@ -320,7 +329,6 @@ function changeSpeed() {
     speed.innerHTML = "Speed<br>x2";
   }
 }
-
 
 //Want to update audio and playbackRate to be sliders/selectors
 
