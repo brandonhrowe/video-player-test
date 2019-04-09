@@ -17,34 +17,42 @@ const volumeDown = document.querySelector("#volume-down");
 const fullScreen = document.querySelector(".full-screen");
 const speed = document.querySelector(".speed");
 
-// const canvas = document.querySelector("#img-canvas");
-const dupeMedia = document.querySelector("#dupe-video")
+const dupeMedia = document.querySelector("#dupe-video");
 
+//Gets rid of the default control buttons from the video window, but still allows us to utilize functions.
 media.removeAttribute("controls");
-controls.style.visibility = "visible";
 
-//Prevents the control bar from always being on screen when mouse is hovering
+//Sets a starting value for the timer display. The end time will most likely begin as 00:00:00 because the video has not loaded yet.
+timer.innerHTML = `00:00:00 / ${getTimeValues(media.duration)}`;
+
+//Prevents the control bar from always being on screen when mouse is hovering. It should go away after 4 seconds.
+//Second event listener makes it so that controls will always display when mouse is active over them.
 media.addEventListener("mousemove", displayControls);
+controls.addEventListener("mousemove", () => {
+  controls.style.opacity = 1;
+});
 
-function displayControls(e) {
-  controls.classList.add("controls-display");
+function displayControls(event) {
+  controls.style.opacity = 1;
   setTimeout(function() {
-    controls.classList.remove("controls-display");
+    controls.style.opacity = 0;
   }, 4000);
 }
 
-//Play/Pause functionality
+//PLAY/PAUSE FUNCTIONALITY
 play.addEventListener("click", playPauseMedia);
+media.addEventListener("click", playPauseMedia);
 
 document.addEventListener("keydown", e => {
-  e.preventDefault();
   const keyName = e.code;
   if (keyName === "Space") {
+    e.preventDefault();
     playPauseMedia();
   }
 });
 
 function playPauseMedia() {
+  //The first four lines below are to monitor whether the player is currently skipping forward/reverse, and if so, clears out that info.
   rwd.classList.remove("active");
   fwd.classList.remove("active");
   clearInterval(intervalRwd);
@@ -52,7 +60,6 @@ function playPauseMedia() {
   if (media.src === undefined) {
     media.src = "https://archive.org/download/Detour_movie/Detour_512kb.mp4";
     media.load();
-    // media.play();
   }
   if (media.paused) {
     play.firstElementChild.classList.remove("fa-play");
@@ -65,24 +72,23 @@ function playPauseMedia() {
   }
 }
 
-//Stop functionality
+//STOP FUNCTIONALITY
 stop.addEventListener("click", stopMedia);
 media.addEventListener("ended", stopMedia);
 
 function stopMedia() {
+  //The first four lines below are to monitor whether the player is currently skipping forward/reverse, and if so, clears out that info.
   rwd.classList.remove("active");
   fwd.classList.remove("active");
   clearInterval(intervalRwd);
   clearInterval(intervalFwd);
-  // media.pause();
-  // media.currentTime = 0;
   media.removeAttribute("src");
   media.load();
   play.firstElementChild.classList.remove("fa-pause");
   play.firstElementChild.classList.add("fa-play");
 }
 
-//Skip forward/backward functionality
+//SKIP FORWARD/BACKWARDS FUNCTIONALITY
 rwd.addEventListener("click", mediaBackward);
 fwd.addEventListener("click", mediaForward);
 
@@ -139,13 +145,17 @@ function windForward() {
   }
 }
 
-//Keeping the timecode up to date
-media.addEventListener("timeupdate", setTime);
+//UPDATING TIMECODE
+media.addEventListener("timeupdate", setTimecode);
 
-function setTime() {
-  let hours = Math.floor(media.currentTime / 3600);
-  let minutes = Math.floor((media.currentTime - hours) / 60);
-  let seconds = Math.floor(media.currentTime - minutes * 60);
+//This function will return a string based off of the time in seconds passed in.
+function getTimeValues(time) {
+  if (!time) {
+    time = 0;
+  }
+  let hours = Math.floor(time / 3600);
+  let minutes = Math.floor(time / 60 - hours * 60);
+  let seconds = Math.floor(time - hours * 3600 - minutes * 60);
   let hourValue;
   let minuteValue;
   let secondValue;
@@ -157,57 +167,63 @@ function setTime() {
   }
 
   if (minutes < 10) {
-    minuteValue = "0" + minutes;
+    minuteValue = `0${minutes}`;
   } else {
     minuteValue = minutes;
   }
 
   if (seconds < 10) {
-    secondValue = "0" + seconds;
+    secondValue = `0${seconds}`;
   } else {
     secondValue = seconds;
   }
 
-  let mediaTime = hourValue + ":" + minuteValue + ":" + secondValue;
-  timer.textContent = mediaTime;
+  return `${hourValue}:${minuteValue}:${secondValue}`;
+}
+
+//This function resets the current timecode of the player, as well as reconfiguring the display of the progress bar.
+function setTimecode() {
+  timer.textContent = `${getTimeValues(media.currentTime)} / ${getTimeValues(
+    media.duration
+  )}`;
 
   let barLength =
     timerWrapper.clientWidth * (media.currentTime / media.duration);
-  timerBar.style.width = barLength + "px";
+  timerBar.style.width = `${barLength}px`;
 }
 
-//Allowing user to click on time wrapper and change current time
+//JUMP TO SPOT IN TIMELINE / CREATE THUMBNAILS FROM TIMELINE
 let timerWrapperRect = timerWrapper.getBoundingClientRect();
 
 timerWrapper.addEventListener("click", changePosition);
-timerWrapper.addEventListener("mousemove", draw)
+timerWrapper.addEventListener("mousemove", renderThumbnail);
 timerWrapper.addEventListener("mouseout", () => {
   dupeMedia.style.opacity = 0;
-})
+});
 
 function changePosition(e) {
-  let begCoor = timerWrapperRect.x;
-  let timerWidth = timerWrapperRect.width;
-  let clickCoor = e.x;
-  media.currentTime = media.duration * ((clickCoor - begCoor) / timerWidth);
+  media.currentTime = calculateTime(e);
 }
 
-function draw(e) {
-  let begCoor = timerWrapperRect.x;
-  let timerWidth = timerWrapperRect.width;
-  let hoverCoor = e.x;
-  let timeCode = media.duration * ((hoverCoor - begCoor) / timerWidth);
-  // let context = canvas.getContext("2d");
+function renderThumbnail(e) {
+  //When first loading the page, the video will most likely not have been loaded yet. This is why there is a fallback value of 0 for the timecode.
+  let timeCode = calculateTime(e) || 0;
   dupeMedia.style.opacity = 1;
-  dupeMedia.style.left = `${(hoverCoor - begCoor)}px`;
-  console.log(dupeMedia.style.left)
-  dupeMedia.pause()
+  timerWrapperRect = timerWrapper.getBoundingClientRect();
+  let timerBarRect = timerBar.getBoundingClientRect();
+  dupeMedia.style.left = `${e.x - timerBarRect.x - dupeMedia.width}px`;
   dupeMedia.currentTime = timeCode;
-  // setTime(5000)
-  // context.drawImage(media, 0, 0, canvas.width, canvas.height);
 }
 
-//Audio functionality
+const calculateTime = e => {
+  timerWrapperRect = timerWrapper.getBoundingClientRect();
+  let begCoor = timerWrapperRect.x;
+  let timerWidth = timerWrapperRect.width;
+  let eventCoor = e.x;
+  return media.duration * ((eventCoor - begCoor) / timerWidth);
+};
+
+//AUDIO FUNCTIONALITY
 audio.addEventListener("click", toggleMute);
 volumeUp.addEventListener("click", volumeChange);
 volumeDown.addEventListener("click", volumeChange);
@@ -249,7 +265,7 @@ function volumeChange(e) {
   }
 }
 
-//Fullscreen functionality
+//FULLSCREEN FUNCTIONALITY
 fullScreen.addEventListener("click", toggleFullscreen);
 
 document.addEventListener("fullscreenchange", e => {
@@ -272,7 +288,7 @@ function toggleFullscreen() {
   }
 }
 
-//Skip ahead/back 10 seconds with arrow click
+//SKIP AHEAD/BACK 10 SECONDS
 document.addEventListener("keydown", e => {
   const keyName = e.key;
   if (media.play) {
@@ -292,7 +308,7 @@ document.addEventListener("keydown", e => {
   }
 });
 
-//Change playback speed functionality
+//PLAYBACK RATE FUNCTIONALITY
 speed.addEventListener("click", changeSpeed);
 
 function changeSpeed() {
@@ -305,11 +321,7 @@ function changeSpeed() {
   }
 }
 
-// timerWrapper.addEventListener("hover", showThumbnail...);
-//Need to utilize some library to take image at specific time and display it in popup window
 
 //Want to update audio and playbackRate to be sliders/selectors
-
-//Look more into implementing other info from Internet Archive API, such as title, etc.
 
 //Implement subtitle track

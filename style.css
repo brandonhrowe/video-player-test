@@ -1,5 +1,6 @@
 body {
   background-image: linear-gradient(#5f5f5f, #333333);
+  height: 150vh;
 }
 
 .header {
@@ -10,8 +11,14 @@ body {
 }
 
 h1 {
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-family: "Molot", Impact, "Haettenschweiler", 'Arial Narrow Bold', sans-serif;
   color: #e4ab1d;
+  font-size: 45px;
+  margin-bottom: 0%;
+  text-align: center;
+}
+
+h1 > span {
   font-size: 65px;
 }
 
@@ -19,12 +26,14 @@ h1 {
   display: flex;
   justify-content: center;
   flex-direction: column;
+  flex-shrink: 75%;
+  margin-left: 0%;
+  margin-right: 0%;
 }
 
 .controls {
-  visibility: hidden;
   opacity: 0;
-  width: 50%;
+  width: 60%;
   height: 5.5vh;
   border-radius: 10px;
   bottom: 10px;
@@ -38,30 +47,26 @@ h1 {
 }
 
 video {
-  margin-bottom:  -3%;
+  margin-bottom:  -2.75%;
   padding: 0px;
   align-self: center;
-  width: 50%;
+  width: 60%;
 }
 
 .fullscreen {
   width: 100%;
 }
 
-/* .player:hover .controls {
+.player:hover .controls {
   opacity: 1;
-} */
+}
 
 .player .controls:hover {
   opacity: 1;
 }
 
-.controls-display {
-  opacity: 1;
-}
-
 button {
-  flex-basis: 7%;
+  flex-basis: 5%;
   padding: 0px;
   display: flex;
   justify-content: center;
@@ -99,7 +104,7 @@ button > i {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   text-shadow: 1px 1px 0px black;
   color: white;
-  flex: 5;
+  flex-grow: 5;
   position: relative;
 }
 
@@ -121,22 +126,21 @@ button > i {
 
 #dupe-video {
   z-index: -10;
-  width: 10%;
+  width: 75px;
   opacity: 0;
   transition: 0.5s all;
-  border: blue;
+  border: #e4ab1d;
   border-radius: 10px;
   border-style: ridge;
   position: relative;
 }
 
 .dupe-video-container {
-  margin-top: -100px;
-  width: 50%;
+  margin-top: -70px;
+  width: 50px;
   align-self: center;
   z-index: 3;
   position: relative;
-  left: 4%;
   padding: 0px;
 }
 
