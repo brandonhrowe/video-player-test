@@ -17,6 +17,9 @@ const volumeDown = document.querySelector("#volume-down");
 const fullScreen = document.querySelector(".full-screen");
 const speed = document.querySelector(".speed");
 
+// const canvas = document.querySelector("#img-canvas");
+const dupeMedia = document.querySelector("#dupe-video")
+
 media.removeAttribute("controls");
 controls.style.visibility = "visible";
 
@@ -49,7 +52,7 @@ function playPauseMedia() {
   if (media.src === undefined) {
     media.src = "https://archive.org/download/Detour_movie/Detour_512kb.mp4";
     media.load();
-    media.play();
+    // media.play();
   }
   if (media.paused) {
     play.firstElementChild.classList.remove("fa-play");
@@ -177,12 +180,31 @@ function setTime() {
 let timerWrapperRect = timerWrapper.getBoundingClientRect();
 
 timerWrapper.addEventListener("click", changePosition);
+timerWrapper.addEventListener("mousemove", draw)
+timerWrapper.addEventListener("mouseout", () => {
+  dupeMedia.style.opacity = 0;
+})
 
 function changePosition(e) {
   let begCoor = timerWrapperRect.x;
   let timerWidth = timerWrapperRect.width;
   let clickCoor = e.x;
   media.currentTime = media.duration * ((clickCoor - begCoor) / timerWidth);
+}
+
+function draw(e) {
+  let begCoor = timerWrapperRect.x;
+  let timerWidth = timerWrapperRect.width;
+  let hoverCoor = e.x;
+  let timeCode = media.duration * ((hoverCoor - begCoor) / timerWidth);
+  // let context = canvas.getContext("2d");
+  dupeMedia.style.opacity = 1;
+  dupeMedia.style.left = `${(hoverCoor - begCoor)}px`;
+  console.log(dupeMedia.style.left)
+  dupeMedia.pause()
+  dupeMedia.currentTime = timeCode;
+  // setTime(5000)
+  // context.drawImage(media, 0, 0, canvas.width, canvas.height);
 }
 
 //Audio functionality
@@ -201,7 +223,9 @@ function toggleMute() {
     }
   } else {
     media.muted = true;
-    audio.firstElementChild.classList.remove("fa-volume-up" || "fa-volume-down");
+    audio.firstElementChild.classList.remove(
+      "fa-volume-up" || "fa-volume-down"
+    );
     audio.firstElementChild.classList.add("fa-volume-mute");
   }
 }

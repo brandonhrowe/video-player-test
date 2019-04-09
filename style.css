@@ -93,16 +93,6 @@ button > i {
   position: relative;
 }
 
-/* button:before {
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
-  font-size: 20px;
-  position: relative;
-  content: attr(data-icon);
-  color: #aaa;
-  text-shadow: 1px 1px 0px black;
-} */
-
 .timer {
   line-height: 38px;
   font-size: 10px;
@@ -128,3 +118,25 @@ button > i {
   z-index: 3;
   left: 19px;
 }
+
+#dupe-video {
+  z-index: -10;
+  width: 10%;
+  opacity: 0;
+  transition: 0.5s all;
+  border: blue;
+  border-radius: 10px;
+  border-style: ridge;
+  position: relative;
+}
+
+.dupe-video-container {
+  margin-top: -100px;
+  width: 50%;
+  align-self: center;
+  z-index: 3;
+  position: relative;
+  left: 4%;
+  padding: 0px;
+}
+

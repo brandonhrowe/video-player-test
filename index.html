@@ -24,7 +24,7 @@
           src="https://archive.org/download/Detour_movie/Detour_512kb.mp4"
           type="video/mp4"
         />
-        <track default kind="subtitles" src="https://archive.org/download/Detour_movie/Detour.asr.srt">
+        <track default kind="captions" srclang="en" src="/detour.srt" />
       </video>
       <div class="controls">
         <button class="play" aria-label="play pause toggle">
@@ -44,7 +44,7 @@
           <i class="fas fa-forward"></i>
         </button>
         <button class="speed" aria-label="speed">
-          <span class="speed">Speed<br>x2</span>
+          <span class="speed">Speed<br />x2</span>
         </button>
         <button class="audio" aria-label="audio">
           <i class="fas fa-volume-up"></i>
@@ -56,6 +56,14 @@
         <button class="full-screen" aria-label="full screen">
           <i class="fas fa-expand"></i>
         </button>
+      </div>
+      <div class="dupe-video-container">
+        <video id="dupe-video" width="50px" height="auto">
+          <source
+            src="https://archive.org/download/Detour_movie/Detour_512kb.mp4"
+            type="video/mp4"
+          />
+        </video>
       </div>
     </figure>
   </body>
