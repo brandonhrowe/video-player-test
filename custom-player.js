@@ -233,7 +233,7 @@ function toggleMute() {
   if (media.muted) {
     media.muted = false;
     audio.firstElementChild.classList.remove("fa-volume-mute");
-    if (media.volume >= 0.5) {
+    if (media.volume === 1) {
       audio.firstElementChild.classList.add("fa-volume-up");
     } else {
       audio.firstElementChild.classList.add("fa-volume-down");
@@ -257,7 +257,7 @@ function volumeChange(e) {
   } else {
     media.volume -= 0.1;
   }
-  if (media.volume >= 0.5) {
+  if (media.volume === 1) {
     audio.firstElementChild.classList.remove("fa-volume-down");
     audio.firstElementChild.classList.add("fa-volume-up");
   } else {
@@ -330,6 +330,3 @@ function changeSpeed() {
   }
 }
 
-//Want to update audio and playbackRate to be sliders/selectors
-
-//Implement subtitle track
