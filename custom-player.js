@@ -1,5 +1,5 @@
 const figure = document.querySelector("figure");
-const media = document.querySelector("video");
+const video = document.querySelector(".custom-video");
 const controls = document.querySelector(".controls");
 
 const play = document.querySelector(".play");
@@ -17,18 +17,14 @@ const volumeDown = document.querySelector("#volume-down");
 const fullScreen = document.querySelector(".full-screen");
 const speed = document.querySelector(".speed");
 
-const dupeMedia = document.querySelector("#dupe-video");
-
-console.log(media.textTracks);
-//Gets rid of the default control buttons from the video window, but still allows us to utilize functions.
-media.removeAttribute("controls");
+const dupeVideo = document.querySelector("#dupe-video");
 
 //Sets a starting value for the timer display. The end time will most likely begin as 00:00:00 because the video has not loaded yet.
-timer.innerHTML = `00:00:00 / ${getTimeValues(media.duration)}`;
+timer.innerHTML = `00:00:00 / ${getTimeValues(video.duration)}`;
 
 //Prevents the control bar from always being on screen when mouse is hovering. It should go away after 4 seconds.
 //Second event listener makes it so that controls will always display when mouse is active over them.
-media.addEventListener("mousemove", displayControls);
+video.addEventListener("mousemove", displayControls);
 controls.addEventListener("mousemove", () => {
   controls.style.opacity = 1;
 });
@@ -41,113 +37,113 @@ function displayControls(event) {
 }
 
 //PLAY/PAUSE FUNCTIONALITY
-play.addEventListener("click", playPauseMedia);
-media.addEventListener("click", playPauseMedia);
+play.addEventListener("click", playPauseVideo);
+video.addEventListener("click", playPauseVideo);
 
 document.addEventListener("keydown", e => {
   const keyName = e.code;
   if (keyName === "Space") {
     e.preventDefault();
-    playPauseMedia();
+    playPauseVideo();
   }
 });
 
-function playPauseMedia() {
+function playPauseVideo() {
   //The first four lines below are to monitor whether the player is currently skipping forward/reverse, and if so, clears out that info.
   rwd.classList.remove("active");
   fwd.classList.remove("active");
   clearInterval(intervalRwd);
   clearInterval(intervalFwd);
-  if (media.src === undefined) {
-    media.src = "https://archive.org/download/Detour_movie/Detour_512kb.mp4";
-    media.load();
+  if (video.src === undefined) {
+    video.src = "https://archive.org/download/Detour_movie/Detour_512kb.mp4";
+    video.load();
   }
-  if (media.paused) {
+  if (video.paused) {
     play.firstElementChild.classList.remove("fa-play");
     play.firstElementChild.classList.add("fa-pause");
-    media.play();
+    video.play();
   } else {
     play.firstElementChild.classList.remove("fa-pause");
     play.firstElementChild.classList.add("fa-play");
-    media.pause();
+    video.pause();
   }
 }
 
 //STOP FUNCTIONALITY
-stop.addEventListener("click", stopMedia);
-media.addEventListener("ended", stopMedia);
+stop.addEventListener("click", stopVideo);
+video.addEventListener("ended", stopVideo);
 
-function stopMedia() {
+function stopVideo() {
   //The first four lines below are to monitor whether the player is currently skipping forward/reverse, and if so, clears out that info.
   rwd.classList.remove("active");
   fwd.classList.remove("active");
   clearInterval(intervalRwd);
   clearInterval(intervalFwd);
-  media.removeAttribute("src");
-  media.load();
+  video.removeAttribute("src");
+  video.load();
   play.firstElementChild.classList.remove("fa-pause");
   play.firstElementChild.classList.add("fa-play");
 }
 
 //SKIP FORWARD/BACKWARDS FUNCTIONALITY
-rwd.addEventListener("click", mediaBackward);
-fwd.addEventListener("click", mediaForward);
+rwd.addEventListener("click", videoBackward);
+fwd.addEventListener("click", videoForward);
 
 let intervalFwd;
 let intervalRwd;
 
-function mediaBackward() {
+function videoBackward() {
   clearInterval(intervalFwd);
   fwd.classList.remove("active");
 
   if (rwd.classList.contains("active")) {
     rwd.classList.remove("active");
     clearInterval(intervalRwd);
-    media.play();
+    video.play();
   } else {
     rwd.classList.add("active");
-    media.pause();
+    video.pause();
     intervalRwd = setInterval(windBackward, 200);
   }
 }
 
-function mediaForward() {
+function videoForward() {
   clearInterval(intervalRwd);
   rwd.classList.remove("active");
 
   if (fwd.classList.contains("active")) {
     fwd.classList.remove("active");
     clearInterval(intervalFwd);
-    media.play();
+    video.play();
   } else {
     fwd.classList.add("active");
-    media.pause();
+    video.pause();
     intervalFwd = setInterval(windForward, 200);
   }
 }
 
 function windBackward() {
-  if (media.currentTime <= 3) {
+  if (video.currentTime <= 3) {
     rwd.classList.remove("active");
     clearInterval(intervalRwd);
-    stopMedia();
+    stopVideo();
   } else {
-    media.currentTime -= 3;
+    video.currentTime -= 3;
   }
 }
 
 function windForward() {
-  if (media.currentTime >= media.duration - 3) {
+  if (video.currentTime >= video.duration - 3) {
     fwd.classList.remove("active");
     clearInterval(intervalFwd);
-    stopMedia();
+    stopVideo();
   } else {
-    media.currentTime += 3;
+    video.currentTime += 3;
   }
 }
 
 //UPDATING TIMECODE
-media.addEventListener("timeupdate", setTimecode);
+video.addEventListener("timeupdate", setTimecode);
 
 //This function will return a string based off of the time in seconds passed in.
 function getTimeValues(time) {
@@ -184,12 +180,12 @@ function getTimeValues(time) {
 
 //This function resets the current timecode of the player, as well as reconfiguring the display of the progress bar.
 function setTimecode() {
-  timer.textContent = `${getTimeValues(media.currentTime)} / ${getTimeValues(
-    media.duration
+  timer.textContent = `${getTimeValues(video.currentTime)} / ${getTimeValues(
+    video.duration
   )}`;
 
   let barLength =
-    timerWrapper.clientWidth * (media.currentTime / media.duration);
+    timerWrapper.clientWidth * (video.currentTime / video.duration);
   timerBar.style.width = `${barLength}px`;
 }
 
@@ -199,21 +195,21 @@ let timerWrapperRect = timerWrapper.getBoundingClientRect();
 timerWrapper.addEventListener("click", changePosition);
 timerWrapper.addEventListener("mousemove", renderThumbnail);
 timerWrapper.addEventListener("mouseout", () => {
-  dupeMedia.style.opacity = 0;
+  dupeVideo.style.opacity = 0;
 });
 
 function changePosition(e) {
-  media.currentTime = calculateTime(e);
+  video.currentTime = calculateTime(e);
 }
 
 function renderThumbnail(e) {
   //When first loading the page, the video will most likely not have been loaded yet. This is why there is a fallback value of 0 for the timecode.
   let timeCode = calculateTime(e) || 0;
-  dupeMedia.style.opacity = 1;
+  dupeVideo.style.opacity = 1;
   timerWrapperRect = timerWrapper.getBoundingClientRect();
   let timerBarRect = timerBar.getBoundingClientRect();
-  dupeMedia.style.left = `${e.x - timerBarRect.x - dupeMedia.width}px`;
-  dupeMedia.currentTime = timeCode;
+  dupeVideo.style.left = `${e.x - timerBarRect.x - dupeVideo.width}px`;
+  dupeVideo.currentTime = timeCode;
 }
 
 const calculateTime = e => {
@@ -221,7 +217,7 @@ const calculateTime = e => {
   let begCoor = timerWrapperRect.x;
   let timerWidth = timerWrapperRect.width;
   let eventCoor = e.x;
-  return media.duration * ((eventCoor - begCoor) / timerWidth);
+  return video.duration * ((eventCoor - begCoor) / timerWidth);
 };
 
 //AUDIO FUNCTIONALITY
@@ -230,16 +226,16 @@ volumeUp.addEventListener("click", volumeChange);
 volumeDown.addEventListener("click", volumeChange);
 
 function toggleMute() {
-  if (media.muted) {
-    media.muted = false;
+  if (video.muted) {
+    video.muted = false;
     audio.firstElementChild.classList.remove("fa-volume-mute");
-    if (media.volume === 1) {
+    if (video.volume === 1) {
       audio.firstElementChild.classList.add("fa-volume-up");
     } else {
       audio.firstElementChild.classList.add("fa-volume-down");
     }
   } else {
-    media.muted = true;
+    video.muted = true;
     audio.firstElementChild.classList.remove(
       "fa-volume-up" || "fa-volume-down"
     );
@@ -248,16 +244,16 @@ function toggleMute() {
 }
 
 function volumeChange(e) {
-  if (media.muted) {
-    media.muted = false;
+  if (video.muted) {
+    video.muted = false;
     audio.firstElementChild.classList.remove("fa-volume-mute");
   }
   if (e.target.id === "volume-up") {
-    media.volume += 0.1;
+    video.volume += 0.1;
   } else {
-    media.volume -= 0.1;
+    video.volume -= 0.1;
   }
-  if (media.volume === 1) {
+  if (video.volume === 1) {
     audio.firstElementChild.classList.remove("fa-volume-down");
     audio.firstElementChild.classList.add("fa-volume-up");
   } else {
@@ -270,21 +266,21 @@ function volumeChange(e) {
 fullScreen.addEventListener("click", toggleFullscreen);
 
 document.addEventListener("fullscreenchange", e => {
-  if (media.classList.contains("fullscreen")) {
-    media.classList.remove("fullscreen");
+  if (video.classList.contains("fullscreen")) {
+    video.classList.remove("fullscreen");
     fullScreen.firstElementChild.classList.remove("fa-compress");
     fullScreen.firstElementChild.classList.add("fa-expand");
   } else {
-    media.classList.add("fullscreen");
+    video.classList.add("fullscreen");
     fullScreen.firstElementChild.classList.remove("fa-expand");
     fullScreen.firstElementChild.classList.add("fa-compress");
     document.addEventListener("mousemove", () => {
       setTimeout(() => {
-        if (!media.classList.contains("cursor")) {
-          media.classList.add("cursor");
+        if (!video.classList.contains("cursor")) {
+          video.classList.add("cursor");
         }
       }, 4000);
-      media.classList.remove("cursor");
+      video.classList.remove("cursor");
     });
   }
 });
@@ -300,18 +296,18 @@ function toggleFullscreen() {
 //SKIP AHEAD/BACK 10 SECONDS
 document.addEventListener("keydown", e => {
   const keyName = e.key;
-  if (media.play) {
+  if (video.play) {
     if (keyName === "ArrowLeft") {
-      if (media.currentTime <= 10) {
-        media.currentTime = 0;
+      if (video.currentTime <= 10) {
+        video.currentTime = 0;
       } else {
-        media.currentTime -= 10;
+        video.currentTime -= 10;
       }
     } else if (keyName === "ArrowRight") {
-      if (media.currentTime >= media.duration - 10) {
-        media.stop();
+      if (video.currentTime >= video.duration - 10) {
+        video.stop();
       } else {
-        media.currentTime += 10;
+        video.currentTime += 10;
       }
     }
   }
@@ -321,11 +317,11 @@ document.addEventListener("keydown", e => {
 speed.addEventListener("click", changeSpeed);
 
 function changeSpeed() {
-  if (media.playbackRate === 1) {
-    media.playbackRate = 2;
+  if (video.playbackRate === 1) {
+    video.playbackRate = 2;
     speed.innerHTML = "Speed<br>x1";
   } else {
-    media.playbackRate = 1;
+    video.playbackRate = 1;
     speed.innerHTML = "Speed<br>x2";
   }
 }

@@ -18,8 +18,17 @@
     <div class="header">
       <h1>THE <span>DETOUR</span> FAN PAGE</h1>
     </div>
-    <figure class="player">
-      <video controls loop width="100%" height="auto" preload="metadata">
+    <!-- Uncomment the below chunk to display the default video player -->
+    <!-- <h2>Default Player</h2>
+    <div class="default-player-div">
+      <video
+        class="default-player"
+        controls
+        loop
+        muted
+        preload="metadata"
+        poster="detour-image.png"
+      >
         <source
           src="https://archive.org/download/Detour_movie/Detour_512kb.mp4"
           type="video/mp4"
@@ -28,17 +37,32 @@
           >Sorry, it looks like your browser can't play this file. Download the
           link here</a
         >
-        <!-- <track default kind="captions" srclang="en" src="/detour.vtt" /> -->
+      </video>
+    </div> -->
+
+    <!-- Uncomment the below chunk to display the custom-made video player -->
+
+    <figure class="player">
+      <h2>Custom Video Player</h2>
+      <video class="custom-video" loop preload="metadata" poster="detour-image.png">
+        <source
+          src="https://archive.org/download/Detour_movie/Detour_512kb.mp4"
+          type="video/mp4"
+        />
+        <a href="https://archive.org/download/Detour_movie/Detour_512kb.mp4"
+          >Sorry, it looks like your browser can't play this file. Download the
+          link here</a>
       </video>
       <div class="controls">
-        <button class="play" aria-label="play pause toggle">
+        <button class="play">
           <i class="fas fa-play"></i>
         </button>
-        <button class="stop" aria-label="stop">
+        <button class="stop">
           <i class="fas fa-stop"></i>
         </button>
         <div class="timer">
           <div>
+            <!-- This div will come into use for an added feature to the timeline display... -->
             <div class="dupe-video-container">
               <video id="dupe-video" width="50px" height="auto">
                 <source
@@ -48,25 +72,25 @@
               </video>
             </div>
           </div>
-          <span aria-label="timer"></span>
+          <span></span>
         </div>
-        <button class="rwd" aria-label="rewind">
+        <button class="rwd">
           <i class="fas fa-backward"></i>
         </button>
-        <button class="fwd" aria-label="fast forward">
+        <button class="fwd">
           <i class="fas fa-forward"></i>
         </button>
-        <button class="speed" aria-label="speed">
+        <button class="speed">
           <span class="speed">Speed<br />x2</span>
         </button>
-        <button class="audio" aria-label="audio">
+        <button class="audio">
           <i class="fas fa-volume-up"></i>
         </button>
         <div class="volume-div">
           <button id="volume-up" class="volume-button">+</button>
           <button id="volume-down" class="volume-button">-</button>
         </div>
-        <button class="full-screen" aria-label="full screen">
+        <button class="full-screen">
           <i class="fas fa-expand"></i>
         </button>
       </div>

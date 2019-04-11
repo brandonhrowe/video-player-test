@@ -11,7 +11,8 @@ body {
 }
 
 h1 {
-  font-family: "Molot", Impact, "Haettenschweiler", 'Arial Narrow Bold', sans-serif;
+  font-family: "Molot", Impact, "Haettenschweiler", "Arial Narrow Bold",
+    sans-serif;
   color: #e4ab1d;
   font-size: 45px;
   margin-bottom: 0%;
@@ -20,6 +21,12 @@ h1 {
 
 h1 > span {
   font-size: 65px;
+}
+
+h2 {
+  text-align: center;
+  color: #cce0ff;
+  border-style: solid;
 }
 
 .player {
@@ -33,7 +40,7 @@ h1 > span {
 
 .controls {
   opacity: 0;
-  width: 60%;
+  width: 50%;
   height: 5.5vh;
   border-radius: 10px;
   bottom: 10px;
@@ -47,10 +54,10 @@ h1 > span {
 }
 
 video {
-  margin-bottom:  -2.75%;
+  margin-bottom: -2.75%;
   padding: 0px;
   align-self: center;
-  width: 60%;
+  width: 50%;
   display: block;
 }
 
@@ -145,6 +152,18 @@ button > i {
   padding: 0px;
 }
 
-.cursor{
+.cursor {
   cursor: none;
+}
+
+/* For default player */
+.default-player-div {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-self: center;
+}
+
+.default-player {
+  flex-basis: 50%;
 }
