@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "font-awesome": "^4.7.0"
+    "font-awesome": "^4.7.0",
+    "video.js": "^7.4.1",
+    "videojs-thumbnails": "^1.0.3"
   }
 }

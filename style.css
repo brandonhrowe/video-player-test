@@ -1,3 +1,4 @@
+/* For overall page view; will not affect any of the video options */
 body {
   background-image: linear-gradient(#5f5f5f, #333333);
   height: 125vh;
@@ -29,6 +30,32 @@ h2 {
   border-style: solid;
 }
 
+/* For default player */
+.default-player-div {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-self: center;
+}
+
+.default-player {
+  flex-basis: 50%;
+}
+
+/* For Video.js, just to center the player in the middle of the page */
+.video-js-div {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-self: center;
+}
+
+/* .video-js {
+  flex-basis: 50%;
+} */
+
+/* ALL of the below is for the custom video example */
+/*
 .player {
   display: flex;
   justify-content: center;
@@ -154,16 +181,4 @@ button > i {
 
 .cursor {
   cursor: none;
-}
-
-/* For default player */
-.default-player-div {
-  display: flex;
-  justify-content: center;
-  flex-direction: row;
-  align-self: center;
-}
-
-.default-player {
-  flex-basis: 50%;
-}
+} */
